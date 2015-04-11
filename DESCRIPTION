@@ -1,0 +1,12 @@
+Package: geminiUtil
+Type: Package
+Title: Helps manage the Gemini data
+Version: 0.0.1
+Date: 2015-04-09
+Author: Brent Schneeman
+Maintainer: Brent Schneeman <brent@homeaway.com>
+Description: More about what it does (maybe more than one line)
+License: HomeAway Confidential and Proprietary
+Imports: dplyr,
+    ggmap,
+    data.table
