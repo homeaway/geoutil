@@ -1,12 +1,12 @@
-Package: geminiUtil
+Package: geoutil
 Type: Package
-Title: Helps manage the Gemini data
+Title: Helps manage geodata
 Version: 0.0.1
 Date: 2015-04-09
 Author: Brent Schneeman
 Maintainer: Brent Schneeman <brent@homeaway.com>
 Description: More about what it does (maybe more than one line)
-License: HomeAway Confidential and Proprietary
+License: GPL-2
 Imports: dplyr,
     ggmap,
     data.table
