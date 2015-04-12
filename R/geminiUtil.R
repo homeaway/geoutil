@@ -3,8 +3,9 @@ HomeAwayBlue = "#2A6EBB"
 HomeAwayGreen = "#839E73"
 WebRed = "#FF5A60"
 
-pointsInLocality = function(candidates_df, world_geo){
+pointsInLocality = function(world_geo, candidates_df){
   require(dplyr)
+  require(data.table)
   
   meanLat = mean(candidates_df$lat)
   sdLat = sd(candidates_df$lat)
@@ -14,7 +15,7 @@ pointsInLocality = function(candidates_df, world_geo){
   # now go back and scoop up all the points from the world_geo. This will help to 
   # catch misspellings and the like.
   
-  ha_df = world_geo %>% filter(datasource=="HA") %>% 
+  ha_df = world_geo %>% filter(datasource=="Internal") %>% 
     filter(lat >= meanLat - 3*sdLat) %>%
     filter(lat <= meanLat + 3*sdLat) %>%
     filter(lon >= meanLon - 3*sdLon) %>%
@@ -27,20 +28,19 @@ pointsInLocality = function(candidates_df, world_geo){
   localLatMax = max(ha_df$lat)
   localLatMin = min(ha_df$lat)
   
-  locality_df = world_geo %>% filter(datasource=="Web") %>%
+  locality_df = world_geo %>% filter(datasource=="External") %>%
     filter(lon<=localLonMax) %>% filter(lon>=localLonMin) %>%
     filter(lat<=localLatMax) %>% filter(lat>=localLatMin)
   
-  points = list(ha = ha_df,
-                web = locality_df)
+  points = as.data.frame(rbindlist(list(ha = ha_df,
+                web = locality_df)))
   
 }
 
-visualizeLocality = function(geoList, zoom=10, color="bw") {
+visualizeLocality = function(geo_df, zoom=10, color="bw") {
   require(ggmap)
-  require(data.table)
-  
-  local_geo=as.data.frame(rbindlist(geoList))
+ 
+  local_geo=geo_df
   
   theMap = get_googlemap(center=c(lon = mean(local_geo$lon), lat=mean(local_geo$lat)), 
                          maptype="roadmap", 
