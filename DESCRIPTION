@@ -6,7 +6,7 @@ Date: 2015-04-09
 Author: Brent Schneeman
 Maintainer: Brent Schneeman <brent@homeaway.com>
 Description: More about what it does (maybe more than one line)
-License: GPL-2
+License: http://www.apache.org/licenses/LICENSE-2.0
 Imports: dplyr,
     ggmap,
     data.table,
