@@ -57,3 +57,16 @@ visualizeLocality = function(geo_df, zoom=10, color="bw") {
     guides(colour = guide_legend(override.aes = list(size=4, shape=19, alpha=1))) +
     theme(legend.key=element_blank()) 
 }
+
+mapLocality = function(geo_df) {
+  require(leaflet)
+  
+  fac = colorFactor(c(HomeAwayBlue, WebRed), levels=unique(geo_df$datasource))
+  
+  attr <- 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  template <- 'http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png'
+  opts = tileOptions(subdomains='abcd', minZoom=0, maxZoom=20)
+  leaflet(geo_df) %>% addTiles(urlTemplate=template, attribution=attr, options=opts) %>% 
+    addCircleMarkers(geo_df$lon, geo_df$lat, color = ~fac(datasource), radius=2.5)
+  
+}
