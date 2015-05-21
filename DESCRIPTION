@@ -1,7 +1,7 @@
 Package: geoutil
 Type: Package
 Title: Helps manage geodata
-Version: 0.0.1
+Version: 0.0.2
 Date: 2015-04-09
 Author: Brent Schneeman
 Maintainer: Brent Schneeman <brent@homeaway.com>
