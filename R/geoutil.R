@@ -12,29 +12,21 @@ pointsInLocality = function(geo_df, candidates_df, stdDevs=3){
   meanLon = mean(candidates_df$lon)
   sdLon = sd(candidates_df$lon)
   
-  
   # now go back and scoop up all the points from the geo_df. This will help to 
   # catch misspellings and the like.
-  
+  pointsInBox(geo_df, 
+              meanLon - stdDevs*sdLon,
+              meanLon + stdDevs*sdLon,
+              meanLat - stdDevs*sdLat,
+              meanLat + stdDevs*sdLat)
+}
+
+pointsInBox = function(geo_df, minlon, maxlon, minlat, maxlat) {
   geo_df %>% #filter(datasource=="Internal") %>% 
-    filter(lat >= meanLat - stdDevs*sdLat) %>%
-    filter(lat <= meanLat + stdDevs*sdLat) %>%
-    filter(lon >= meanLon - stdDevs*sdLon) %>%
-    filter(lon <= meanLon + stdDevs*sdLon)
-  
-#   # The data may find all point tagged with the locality, but there could be points inside 
-#   # of a bounding box defined by the locality that are not correctly tagged, so pick them up
-#   localLonMax = max(ha_df$lon) 
-#   localLonMin = min(ha_df$lon)
-#   localLatMax = max(ha_df$lat)
-#   localLatMin = min(ha_df$lat)
-#   
-#   locality_df = geo_df %>% filter(datasource=="External") %>%
-#     filter(lon<=localLonMax) %>% filter(lon>=localLonMin) %>%
-#     filter(lat<=localLatMax) %>% filter(lat>=localLatMin)
-#   
-#   points = as.data.frame(rbindlist(list(ha = ha_df,
-#                 web = locality_df)))
+    filter(lat >= minlat) %>%
+    filter(lat <= maxlat) %>%
+    filter(lon >= minlon) %>%
+    filter(lon <= maxlon)
 }
 
 visualizeLocality = function(geo_df, zoom=10, color="bw") {
