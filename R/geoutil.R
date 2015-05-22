@@ -3,6 +3,18 @@ HomeAwayBlue = "#2A6EBB"
 HomeAwayGreen = "#839E73"
 WebRed = "#FF5A60"
 
+
+#' Finds the observations in geo_df based on candidates_df
+#'
+#' @param geo_df 
+#' @param candidates_df 
+#' @param stdDevs 
+#'
+#' @return a data frame consisting of all points in the geo_df, based on a bounding box formed from the
+#' average lon/lat of the points in candidates_df, +/- the number of stdDevs
+#' @export
+#'
+#' @examples pointsInLocality(data, data, 2)
 pointsInLocality = function(geo_df, candidates_df, stdDevs=3){
   require(dplyr)
   require(data.table)
@@ -21,6 +33,18 @@ pointsInLocality = function(geo_df, candidates_df, stdDevs=3){
               meanLat + stdDevs*sdLat)
 }
 
+#' Returns all observation inside the bounding box defined by lon/lat
+#'
+#' @param geo_df 
+#' @param minlon 
+#' @param maxlon 
+#' @param minlat 
+#' @param maxlat 
+#'
+#' @return data frame containing all obs inside the bounding box
+#' @export
+#'
+#' @examples pointsInBox(df, 1,2,-1,1)
 pointsInBox = function(geo_df, minlon, maxlon, minlat, maxlat) {
   geo_df %>% #filter(datasource=="Internal") %>% 
     filter(lat >= minlat) %>%
@@ -29,6 +53,16 @@ pointsInBox = function(geo_df, minlon, maxlon, minlat, maxlat) {
     filter(lon <= maxlon)
 }
 
+#' Wrapper around a ggmap-based static map. Uses google maps.
+#'
+#' @param geo_df 
+#' @param zoom 
+#' @param color 
+#'
+#' @return the output of ggmap
+#' @export
+#'
+#' @examples visualizeLocality(df)
 visualizeLocality = function(geo_df, zoom=10, color="bw") {
   require(ggmap)
  
@@ -50,6 +84,14 @@ visualizeLocality = function(geo_df, zoom=10, color="bw") {
     theme(legend.key=element_blank()) 
 }
 
+#' Leaflet-mapping of geo_df
+#'
+#' @param geo_df 
+#'
+#' @return the leaflet map, for easy insertion into ggvis, if desired
+#' @export
+#'
+#' @examples mapLocality(df)
 mapLocality = function(geo_df) {
   require(leaflet)
   
